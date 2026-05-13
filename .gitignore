@@ -25,3 +25,13 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+.run/
+build/
+.claude/
+.intellijPlatform/
+.gradle/
+
+# IntelliJ IDEA — keep vcs.xml and inspectionProfiles, ignore the rest
+.idea/*
+!.idea/vcs.xml
+!.idea/inspectionProfiles/

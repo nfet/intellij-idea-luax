@@ -1,0 +1,14 @@
+--[[
+    File: ${FILE_NAME}.lua
+    Author: ${USER}
+    Date: ${DATE}
+    Description: ${DESCRIPTION}
+--]]
+
+local o = {}
+
+function sayHello()
+  print('hello')
+end
+
+return o

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <!-- Diamond shape for dark theme -->
+    <polygon points="8,2 14,8 8,14 2,8" fill="#3D3DFF"/>
+
+    <!-- Lua letter -->
+    <text x="8" y="12" font-family="Arial, sans-serif" font-size="9"
+          font-weight="bold" text-anchor="middle" fill="#FFFFFF">L</text>
+</svg>

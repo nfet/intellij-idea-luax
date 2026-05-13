@@ -1,0 +1,63 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.kapresoft.luax</id>
+
+    <!-- Public plugin name should be written in Title Case.
+     Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
+    <name>Luax</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor url="https://www.kapresoft.com">Kapresoft</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <description><![CDATA[ A Lua plugin by kapresoft. This will help in live templates.]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
+
+    <resource-bundle>messages.MyMessageBundle</resource-bundle>
+
+    <!-- Extensions defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.kapresoft.luax.LuaxAppSettings"/>
+        <projectService serviceImplementation="com.kapresoft.luax.LuaxProjectSettings"/>
+        <projectConfigurable
+                parentId="tools"
+                instance="com.kapresoft.luax.LuaxSettingsConfigurable"
+                id="com.kapresoft.luax.LuaxSettingsConfigurable"
+                displayName="Luax"/>
+        <defaultLiveTemplates file="/liveTemplates/Lua.xml"/>
+        <fileType
+                name="Lua"
+                implementationClass="com.kapresoft.luax.LuaFileType"
+                fieldName="INSTANCE"
+                order="first"
+                language="Lua"
+                extensions="lua"/>
+        <liveTemplateContext
+                contextId="LUAX"
+                implementation="com.kapresoft.luax.LuaTemplateContextType"/>
+        <liveTemplateMacro
+                implementation="com.kapresoft.luax.LuaFunctionNameMacro"
+                id="luaFunctionName"/>
+        <liveTemplateMacro
+                implementation="com.kapresoft.luax.LuaCSVSelectionMacro"
+                id="luaCSVSelection"/>
+    </extensions>
+
+    <actions>
+        <action id="com.kapresoft.luax.CsvToLuaAction"
+                class="com.kapresoft.luax.CsvToLuaAction"
+                text="Log Key Values"
+                description="Convert CSV selection to Lua key-value log">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
+
+</idea-plugin>
