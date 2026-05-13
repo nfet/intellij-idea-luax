@@ -2,7 +2,8 @@
 <templateSet group="Lua">
     <template name="logf"
               value="print(&quot;[DEBUG] $FUNCTION$() called&quot;)"
-              description="Print function name debug message"
+              key="template.logf.description"
+              resource-bundle="messages.MyMessageBundle"
               toReformat="true"
               toShortenFQNames="true">
         <variable name="FUNCTION"
@@ -16,7 +17,8 @@
 
     <template name="log key values from selection"
               value="print(&quot;[DEBUG] $FUNCTION$&quot;, $RESULT$$END$)"
-              description="Given a selection value of x,y, this will log using: (&quot;[DEBUG]&quot;, &apos;x=&apos;, x, &apos;y=&apos;, y)"
+              key="template.logKeyValuesFromSelection.description"
+              resource-bundle="messages.MyMessageBundle"
               toReformat="true"
               toShortenFQNames="true">
         <variable name="FUNCTION"
@@ -33,7 +35,8 @@
     </template>
     <template name="log key values from clipboard"
               value="print(&quot;[DEBUG] $FUNCTION$&quot;, $RESULT$$END$)"
-              description="Given a copy buffer of x,y -- this will log with print(&quot;[DEBUG]&quot;, &apos;x=&apos;, x, &apos;y=&apos;, y)"
+              key="template.logKeyValuesFromClipboard.description"
+              resource-bundle="messages.MyMessageBundle"
               toReformat="true"
               toShortenFQNames="true">
         <variable name="FUNCTION"
