@@ -51,8 +51,8 @@
     </extensions>
 
     <actions>
-        <action id="com.kapresoft.luax.CsvToLuaAction"
-                class="com.kapresoft.luax.CsvToLuaAction"
+        <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
+                class="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
                 text="Log Key Values"
                 description="Convert CSV selection to Lua key-value log">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>

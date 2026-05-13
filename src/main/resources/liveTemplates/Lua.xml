@@ -14,29 +14,36 @@
         </context>
     </template>
 
-    <template name="func"
-              value="function $NAME$($PARAMS$)$END$&#10;end"
-              description="Create new function"
+    <template name="log key values from selection"
+              value="print(&quot;[DEBUG] $FUNCTION$&quot;, $RESULT$$END$)"
+              description="Given a selection value of x,y, this will log using: (&quot;[DEBUG]&quot;, &apos;x=&apos;, x, &apos;y=&apos;, y)"
               toReformat="true"
               toShortenFQNames="true">
-        <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true"/>
-        <variable name="PARAMS" expression="" defaultValue="..." alwaysStopAt="true"/>
-        <context>
-            <option name="LUAX" value="true"/>
-        </context>
-    </template>
-
-    <template name="log key values"
-              value="print(&quot;[DEBUG]&quot;, $RESULT$$END$)"
-              description="Log key-value pairs"
-              toReformat="true"
-              toShortenFQNames="true">
-
+        <variable name="FUNCTION"
+                  expression="luaFunctionName()"
+                  defaultValue=""
+                  alwaysStopAt="false"/>
         <variable name="RESULT"
                   expression="luaCSVSelection(SELECTION)"
                   defaultValue=""
                   alwaysStopAt="false"/>
-
+        <context>
+            <option name="LUAX" value="true"/>
+        </context>
+    </template>
+    <template name="log key values from clipboard"
+              value="print(&quot;[DEBUG] $FUNCTION$&quot;, $RESULT$$END$)"
+              description="Given a copy buffer of x,y -- this will log with print(&quot;[DEBUG]&quot;, &apos;x=&apos;, x, &apos;y=&apos;, y)"
+              toReformat="true"
+              toShortenFQNames="true">
+        <variable name="FUNCTION"
+                  expression="luaFunctionName()"
+                  defaultValue=""
+                  alwaysStopAt="false"/>
+        <variable name="RESULT"
+                  expression="luaCSVSelection(clipboard())"
+                  defaultValue=""
+                  alwaysStopAt="false"/>
         <context>
             <option name="LUAX" value="true"/>
         </context>
