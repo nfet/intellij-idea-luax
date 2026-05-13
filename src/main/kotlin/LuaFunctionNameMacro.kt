@@ -9,8 +9,6 @@ import com.intellij.codeInsight.template.TextResult
 import com.intellij.codeInsight.template.macro.MacroBase
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiDocumentManager
-import com.intellij.psi.PsiElement
-import com.intellij.psi.util.PsiTreeUtil
 
 class LuaFunctionNameMacro : MacroBase("luaFunctionName", "Returns the name of the current Lua function") {
 
@@ -36,9 +34,6 @@ class LuaFunctionNameMacro : MacroBase("luaFunctionName", "Returns the name of t
         // Only process Lua files
         if (!isLuaFile) return null
 
-        val offset = editor.caretModel.offset
-        val element = psiFile.findElementAt(offset) ?: return null
-
         val functionName = findLuaFunctionName(editor)
 
         return if (functionName != null) {
@@ -58,23 +53,10 @@ class LuaFunctionNameMacro : MacroBase("luaFunctionName", "Returns the name of t
 
     private fun findLuaFunctionName(editor: Editor): String? {
         val document = editor.document
-        var line = editor.caretModel.offset.let { document.getLineNumber(it) }
-
-        while (line >= 0) {
-            val lineStart = document.getLineStartOffset(line)
-            val lineEnd = document.getLineEndOffset(line)
-            val lineText = document.charsSequence.subSequence(lineStart, lineEnd).toString()
-
-            val regex = Regex("""(?:local\s+)?function\s+([a-zA-Z_][a-zA-Z0-9_.:]*)\b""")
-            val match = regex.find(lineText)
-            if (match != null) {
-                var name = match.groupValues[1]
-                name = name.substringAfterLast(".")
-                name = name.substringAfterLast(":")
-                return name
-            }
-            line--
-        }
-        return null
+        val caretLine = document.getLineNumber(editor.caretModel.offset)
+        val textUpToCaret = document.charsSequence
+            .subSequence(0, document.getLineEndOffset(caretLine))
+            .toString()
+        return LuaEditorUtil.findLuaFunctionName(textUpToCaret)
     }
 }

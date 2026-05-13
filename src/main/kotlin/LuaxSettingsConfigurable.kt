@@ -14,7 +14,7 @@ class LuaxSettingsConfigurable(private val project: Project) : Configurable {
     private var projectLevelCheckbox: JBCheckBox? = null
     private var root: JPanel? = null
 
-    override fun getDisplayName(): String = LuaLanguage.PLUGIN_NAME
+    override fun getDisplayName(): String = "Luax"
 
     override fun createComponent(): JComponent {
         val settingsPanel = LuaxSettingsPanel()

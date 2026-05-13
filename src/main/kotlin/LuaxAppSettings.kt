@@ -23,7 +23,8 @@ class LuaxAppSettings : PersistentStateComponent<LuaxAppSettings.State> {
         set(value) { state.logTemplate = value }
 
     companion object {
-        const val DEFAULT_TEMPLATE = """print("[DEBUG]", ${"$"}{args})"""
+        // fallback [DEBUG]
+        const val DEFAULT_TEMPLATE = """print(${"$"}{functionName}, ${"$"}{args})"""
 
         fun getInstance(): LuaxAppSettings =
             ApplicationManager.getApplication().getService(LuaxAppSettings::class.java)

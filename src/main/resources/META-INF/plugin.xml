@@ -34,13 +34,6 @@
                 id="com.kapresoft.luax.LuaxSettingsConfigurable"
                 displayName="Luax"/>
         <defaultLiveTemplates file="/liveTemplates/Lua.xml"/>
-        <fileType
-                name="Lua"
-                implementationClass="com.kapresoft.luax.LuaFileType"
-                fieldName="INSTANCE"
-                order="first"
-                language="Lua"
-                extensions="lua"/>
         <liveTemplateContext
                 contextId="LUAX"
                 implementation="com.kapresoft.luax.LuaTemplateContextType"/>
