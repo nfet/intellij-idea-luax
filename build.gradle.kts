@@ -12,9 +12,21 @@ dependencies {
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        create("IU", "2026.1.1")
+        val type = providers.gradleProperty("platformType")
+        val version = providers.gradleProperty("platformVersion")
+        create(type, version)
         testFramework(TestFrameworkType.Platform)
         // Add plugin dependencies for compilation here, for example:
         // bundledPlugin("com.intellij.java")
+
+        pluginVerifier()
+    }
+}
+
+intellijPlatform {
+    pluginVerification {
+        ides {
+            create("IU", "2025.1.7")
+        }
     }
 }
