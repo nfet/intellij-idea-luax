@@ -7,13 +7,29 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 
-class LogKeyValuesPopupMenuAction : AnAction() {
+
+@Suppress("ActionPresentationInstantiatedInCtor", "UnstableApiUsage")
+class LogKeyValuesPopupMenuAction : AnAction(
+    LuaBundle.lazyMessage("action.log.key-values.text"),
+    LuaBundle.lazyMessage("action.log.key-values.description")
+) {
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
+
+        if (!editor.selectionModel.hasSelection()) {
+            val offset = editor.caretModel.offset
+            val text = editor.document.charsSequence
+            val start = (offset - 1 downTo 0).firstOrNull { !text[it].isLetterOrDigit() && text[it] != '_' }
+                ?.plus(1) ?: 0
+            val end = (offset until text.length).firstOrNull { !text[it].isLetterOrDigit() && text[it] != '_' }
+                ?: text.length
+            if (start < end) editor.selectionModel.setSelection(start, end)
+        }
+
         val selectedText = editor.selectionModel.selectedText?.trim() ?: return
         val parts = selectedText.split(",").map { it.trim() }.filter { it.isNotEmpty() }
         val args = parts.joinToString(", ") { "'$it=', $it" }
@@ -61,9 +77,8 @@ class LogKeyValuesPopupMenuAction : AnAction() {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val file = e.getData(CommonDataKeys.PSI_FILE)
         val extension = file?.originalFile?.virtualFile?.extension
-        e.presentation.isEnabledAndVisible =
-            editor?.selectionModel?.hasSelection() == true &&
-            extension.equals("lua", ignoreCase = true)
+        val isLua = extension.equals("lua", ignoreCase = true)
+        e.presentation.isEnabledAndVisible = editor != null && isLua
     }
 }
 

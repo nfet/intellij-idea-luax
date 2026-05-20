@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templateSet group="Lua">
+
     <template name="logf"
               value="print(&quot;[DEBUG] $FUNCTION$() called&quot;)"
               key="template.logf.description"

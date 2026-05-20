@@ -27,7 +27,6 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.kapresoft.luax.LuaxAppSettings"/>
-        <projectService serviceImplementation="com.kapresoft.luax.LuaxProjectSettings"/>
         <projectConfigurable
                 parentId="tools"
                 instance="com.kapresoft.luax.LuaxSettingsConfigurable"
@@ -45,13 +44,14 @@
                 id="luaCSVSelection"/>
     </extensions>
 
-    <actions>
-        <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
-                class="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
-                text="Log Key Values"
-                description="Convert CSV selection to Lua key-value log">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
+    <actions resource-bundle="messages.MyMessageBundle">
+        <group id="com.kapresoft.luax.MyGroup">
+            <separator/>
+            <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
+                    class="com.kapresoft.luax.LogKeyValuesPopupMenuAction"/>
+            <separator/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first" />
+        </group>
     </actions>
 
 
