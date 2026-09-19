@@ -49,8 +49,10 @@
     <actions resource-bundle="messages.MyMessageBundle">
         <group id="com.kapresoft.luax.MyGroup">
             <separator/>
-            <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
-                    class="com.kapresoft.luax.LogKeyValuesPopupMenuAction"/>
+            <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction1"
+                    class="com.kapresoft.luax.LogKeyValuesPopupMenuAction1"/>
+            <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction2"
+                    class="com.kapresoft.luax.LogKeyValuesPopupMenuAction2"/>
             <action id="com.kapresoft.luax.HexToFloatPopupMenuAction"
                     class="com.kapresoft.luax.HexToFloatPopupMenuAction"/>
             <action id="com.kapresoft.luax.FloatToHexPopupMenuAction"

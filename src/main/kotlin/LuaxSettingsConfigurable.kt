@@ -26,7 +26,8 @@ class LuaxSettingsConfigurable(private val project: Project) : Configurable {
 
         root = FormBuilder.createFormBuilder()
             .addComponent(checkbox)
-            .addLabeledComponent(MyMessageBundle.message("settings.luax.logTemplate.label"), settingsPanel.templateField, 1, false)
+            .addLabeledComponent(MyMessageBundle.message("settings.luax.logTemplate1.label"), settingsPanel.templateField1, 1, false)
+            .addLabeledComponent(MyMessageBundle.message("settings.luax.logTemplate2.label"), settingsPanel.templateField2, 1, false)
             .addComponentFillVertically(JPanel(), 0)
             .panel
 
@@ -37,24 +38,33 @@ class LuaxSettingsConfigurable(private val project: Project) : Configurable {
         val checkbox = projectLevelCheckbox ?: return false
         val projectSettings = LuaxProjectSettings.getInstance(project)
         if (checkbox.isSelected != projectSettings.isProjectLevel) return true
-        val currentTemplate = if (checkbox.isSelected)
-            projectSettings.logTemplate
+        val currentTemplate1 = if (checkbox.isSelected)
+            projectSettings.logTemplate1
         else
-            LuaxAppSettings.getInstance().logTemplate
-        return panel?.template != currentTemplate
+            LuaxAppSettings.getInstance().logTemplate1
+        val currentTemplate2 = if (checkbox.isSelected)
+            projectSettings.logTemplate2
+        else
+            LuaxAppSettings.getInstance().logTemplate2
+        return panel?.template1 != currentTemplate1 || panel?.template2 != currentTemplate2
     }
 
     override fun apply() {
-        val template = panel?.template ?: LuaxAppSettings.DEFAULT_TEMPLATE
-        if (!template.contains("\${args}"))
+        val template1 = panel?.template1 ?: ""
+        if (template1.isNotBlank() && !template1.contains("\${args}"))
             throw ConfigurationException("Template must contain \${args}")
+        val template2 = panel?.template2 ?: ""
+        if (template2.isNotBlank() && !template2.contains("\${args}"))
+            throw ConfigurationException("Template 2 must contain \${args}")
         val isProjectLevel = projectLevelCheckbox?.isSelected ?: false
         val projectSettings = LuaxProjectSettings.getInstance(project)
         projectSettings.isProjectLevel = isProjectLevel
         if (isProjectLevel) {
-            projectSettings.logTemplate = template
+            projectSettings.logTemplate1 = template1
+            projectSettings.logTemplate2 = template2
         } else {
-            LuaxAppSettings.getInstance().logTemplate = template
+            LuaxAppSettings.getInstance().logTemplate1 = template1
+            LuaxAppSettings.getInstance().logTemplate2 = template2
         }
     }
 
@@ -62,10 +72,14 @@ class LuaxSettingsConfigurable(private val project: Project) : Configurable {
         val projectSettings = LuaxProjectSettings.getInstance(project)
         val isProjectLevel = projectSettings.isProjectLevel
         projectLevelCheckbox?.isSelected = isProjectLevel
-        panel?.template = if (isProjectLevel)
-            projectSettings.logTemplate
+        panel?.template1 = if (isProjectLevel)
+            projectSettings.logTemplate1
         else
-            LuaxAppSettings.getInstance().logTemplate
+            LuaxAppSettings.getInstance().logTemplate1
+        panel?.template2 = if (isProjectLevel)
+            projectSettings.logTemplate2
+        else
+            LuaxAppSettings.getInstance().logTemplate2
     }
 
     override fun disposeUIResources() {
@@ -77,9 +91,13 @@ class LuaxSettingsConfigurable(private val project: Project) : Configurable {
     private fun loadFromCurrentScope() {
         val isProjectLevel = projectLevelCheckbox?.isSelected ?: false
         val projectSettings = LuaxProjectSettings.getInstance(project)
-        panel?.template = if (isProjectLevel)
-            projectSettings.logTemplate.ifBlank { LuaxAppSettings.getInstance().logTemplate }
+        panel?.template1 = if (isProjectLevel)
+            projectSettings.logTemplate1.ifBlank { LuaxAppSettings.getInstance().logTemplate1 }
         else
-            LuaxAppSettings.getInstance().logTemplate
+            LuaxAppSettings.getInstance().logTemplate1
+        panel?.template2 = if (isProjectLevel)
+            projectSettings.logTemplate2.ifBlank { LuaxAppSettings.getInstance().logTemplate2 }
+        else
+            LuaxAppSettings.getInstance().logTemplate2
     }
 }

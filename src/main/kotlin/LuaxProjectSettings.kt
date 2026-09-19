@@ -13,7 +13,8 @@ class LuaxProjectSettings : PersistentStateComponent<LuaxProjectSettings.State> 
 
     data class State(
         var isProjectLevel: Boolean = false,
-        var logTemplate: String = ""
+        var logTemplate1: String = "",
+        var logTemplate2: String = ""
     )
 
     private var state = State()
@@ -28,13 +29,21 @@ class LuaxProjectSettings : PersistentStateComponent<LuaxProjectSettings.State> 
         get() = state.isProjectLevel
         set(value) { state.isProjectLevel = value }
 
-    var logTemplate: String
-        get() = state.logTemplate
-        set(value) { state.logTemplate = value }
+    var logTemplate1: String
+        get() = state.logTemplate1
+        set(value) { state.logTemplate1 = value }
 
-    fun effectiveTemplate(): String =
-        if (isProjectLevel && logTemplate.isNotBlank()) logTemplate
-        else LuaxAppSettings.getInstance().logTemplate
+    var logTemplate2: String
+        get() = state.logTemplate2
+        set(value) { state.logTemplate2 = value }
+
+    fun effectiveTemplate1(): String =
+        if (isProjectLevel && logTemplate1.isNotBlank()) logTemplate1
+        else LuaxAppSettings.getInstance().logTemplate1
+
+    fun effectiveTemplate2(): String =
+        if (isProjectLevel && logTemplate2.isNotBlank()) logTemplate2
+        else LuaxAppSettings.getInstance().logTemplate2
 
     companion object {
         fun getInstance(project: Project): LuaxProjectSettings =
