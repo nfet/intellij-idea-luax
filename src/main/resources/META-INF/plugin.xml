@@ -26,6 +26,7 @@
     <!-- Extensions defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="Luax Notifications" displayType="BALLOON"/>
         <applicationService serviceImplementation="com.kapresoft.luax.LuaxAppSettings"/>
         <projectConfigurable
                 parentId="tools"
@@ -49,6 +50,10 @@
             <separator/>
             <action id="com.kapresoft.luax.LogKeyValuesPopupMenuAction"
                     class="com.kapresoft.luax.LogKeyValuesPopupMenuAction"/>
+            <action id="com.kapresoft.luax.HexToFloatPopupMenuAction"
+                    class="com.kapresoft.luax.HexToFloatPopupMenuAction"/>
+            <action id="com.kapresoft.luax.FloatToHexPopupMenuAction"
+                    class="com.kapresoft.luax.FloatToHexPopupMenuAction"/>
             <separator/>
             <add-to-group group-id="EditorPopupMenu" anchor="first" />
         </group>
