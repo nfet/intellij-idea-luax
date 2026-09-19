@@ -15,7 +15,7 @@ object LuaEditorUtil {
     fun copyToClipboardWithNotification(project: Project?, text: String, title: String) {
         CopyPasteManager.getInstance().setContents(StringSelection(text))
         NotificationGroupManager.getInstance()
-            .getNotificationGroup("Luax Notifications")
+            .getNotificationGroup("Luax notifications")
             .createNotification(title, text, NotificationType.INFORMATION)
             .notify(project)
     }
@@ -29,11 +29,30 @@ object LuaEditorUtil {
     fun candidateText(editor: Editor, isCandidateChar: (Char) -> Boolean): String? {
         if (editor.selectionModel.hasSelection()) return editor.selectionModel.selectedText?.trim()
 
+        val (start, end) = candidateRange(editor, isCandidateChar) ?: return null
+        return editor.document.charsSequence.subSequence(start, end).toString().trim()
+    }
+
+    /**
+     * Like [candidateText], but when nothing is selected it also expands the editor's real
+     * selection to the matched word -- same "expand to word" behavior as Log Key Values --
+     * instead of just reading the text. Only actionPerformed() should call this; update()
+     * must stay side-effect-free and use [candidateText] instead.
+     */
+    fun candidateTextExpandingSelection(editor: Editor, isCandidateChar: (Char) -> Boolean): String? {
+        if (!editor.selectionModel.hasSelection()) {
+            val (start, end) = candidateRange(editor, isCandidateChar) ?: return null
+            editor.selectionModel.setSelection(start, end)
+        }
+        return editor.selectionModel.selectedText?.trim()
+    }
+
+    private fun candidateRange(editor: Editor, isCandidateChar: (Char) -> Boolean): Pair<Int, Int>? {
         val offset = editor.caretModel.offset
         val text = editor.document.charsSequence
         val start = (offset - 1 downTo 0).firstOrNull { !isCandidateChar(text[it]) }?.plus(1) ?: 0
         val end = (offset until text.length).firstOrNull { !isCandidateChar(text[it]) } ?: text.length
-        return if (start < end) text.subSequence(start, end).toString().trim() else null
+        return if (start < end) start to end else null
     }
 
     /**
@@ -52,9 +71,10 @@ object LuaEditorUtil {
 
     private val hexColorRegex = Regex("""^#?([0-9a-fA-F]{6})$""")
 
-    // "r, g, b" or "r, g, b, a" -- alpha (if present) is captured but ignored, since hex has no alpha channel.
+    // Matches the leading "r, g, b" of a "r, g, b" or "r, g, b, a, ..." list -- anything
+    // past the 3rd value (alpha, a 4th color, trailing junk) is ignored, not required.
     private val floatRgbRegex = Regex(
-        """^([01](?:\.\d+)?)\s*,\s*([01](?:\.\d+)?)\s*,\s*([01](?:\.\d+)?)\s*(?:,\s*[01](?:\.\d+)?\s*)?$"""
+        """^([01](?:\.\d+)?)\s*,\s*([01](?:\.\d+)?)\s*,\s*([01](?:\.\d+)?)"""
     )
 
     /** Converts a "#RRGGBB" or "RRGGBB" hex string to "r, g, b" WoW-style 0.0-1.0 floats, or null if not a valid hex color. */
@@ -71,7 +91,7 @@ object LuaEditorUtil {
     fun floatRgbToHex(floatRgb: String): String? {
         val match = floatRgbRegex.find(floatRgb.trim()) ?: return null
         val (r, g, b) = match.destructured
-        val toByte = { v: String -> (v.toDouble() * 255).toInt().coerceIn(0, 255) }
+        val toByte = { v: String -> Math.round(v.toDouble() * 255).toInt().coerceIn(0, 255) }
         return "#%02X%02X%02X".format(toByte(r), toByte(g), toByte(b))
     }
 

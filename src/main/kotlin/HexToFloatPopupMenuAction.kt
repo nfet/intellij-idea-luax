@@ -17,7 +17,7 @@ class HexToFloatPopupMenuAction : AnAction(
 
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
-        val selectedText = LuaEditorUtil.candidateText(editor, isHexChar) ?: return
+        val selectedText = LuaEditorUtil.candidateTextExpandingSelection(editor, isHexChar) ?: return
         val floatRgb = LuaEditorUtil.hexToFloatRgb(selectedText) ?: return
 
         LuaEditorUtil.copyToClipboardWithNotification(e.project, floatRgb, "Copied color float")
