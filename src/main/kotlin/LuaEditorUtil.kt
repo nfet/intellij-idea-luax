@@ -84,7 +84,7 @@ object LuaEditorUtil {
         val r = value.substring(0, 2).toInt(16) / 255.0
         val g = value.substring(2, 4).toInt(16) / 255.0
         val b = value.substring(4, 6).toInt(16) / 255.0
-        return "%.3f, %.3f, %.3f".format(r, g, b)
+        return "%.2f, %.2f, %.2f".format(r, g, b)
     }
 
     /** Converts "r, g, b" or "r, g, b, a" WoW-style 0.0-1.0 floats to a "#RRGGBB" hex string (alpha ignored), or null if not valid. */

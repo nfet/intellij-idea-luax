@@ -31,8 +31,8 @@ class LuaxAppSettings : PersistentStateComponent<LuaxAppSettings.State> {
 
     companion object {
         // fallback [DEBUG]
-        const val DEFAULT_TEMPLATE_1 = """print(${"$"}{functionName}, ${"$"}{args})"""
-        const val DEFAULT_TEMPLATE_2 = """print(libName, ${"$"}{functionName}, ${"$"}{args})"""
+        const val DEFAULT_TEMPLATE_1 = """print('${"$"}{functionName}', ${"$"}{args})"""
+        const val DEFAULT_TEMPLATE_2 = """print(libName, '${"$"}{functionName}', ${"$"}{args})"""
 
         fun getInstance(): LuaxAppSettings =
             ApplicationManager.getApplication().getService(LuaxAppSettings::class.java)

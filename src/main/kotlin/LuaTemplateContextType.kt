@@ -3,7 +3,6 @@ package com.kapresoft.luax
 import com.intellij.codeInsight.template.TemplateActionContext
 import com.intellij.codeInsight.template.TemplateContextType
 import com.intellij.lang.Language
-import org.codehaus.groovy.runtime.DefaultGroovyMethods.printf
 
 class LuaTemplateContextType : TemplateContextType("LuaX") {
     override fun isInContext(context: TemplateActionContext): Boolean {
